@@ -73,11 +73,14 @@
         transacoes  (json/parse-string (:body resposta) true)]
     (println "\n=== Extrato ===")
     (dorun (map (fn [t]
-                  (println (str (:data t) " | "
-                                (if (= (:tipo t) "ganho") "GANHO" "PERDA")
-                                " | " (:descricao t)
-                                " | " (:calorias t) " kcal")))
-                transacoes))))
+              (println (str (:data t) " | "
+                            (if (= (:tipo t) "ganho") "GANHO" "PERDA")
+                            " | "
+                            (if (= (:tipo t) "ganho")
+                              (str (:descricao t) " (" (:quantidade t) "g)")
+                              (:descricao t))
+                            " | " (:calorias t) " kcal")))
+            transacoes))))
 
 (defn- consultar-saldo []
   (let [data-inicio (ler-opcao "Data inicio (YYYY-MM-DD): ")
